@@ -161,27 +161,3 @@ bool hexen::engine::components::TransformComponent::isDirty() const noexcept
 	HEXEN_ADD_TO_PROFILE();
 	return bIsDirty;
 }
-
-template<class T>
-void hexen::engine::components::TransformComponent::setScale(T &&newScale) noexcept
-{
-	HEXEN_ADD_TO_PROFILE();
-	scale = std::forward<T>(newScale);
-	bIsDirty = true;
-}
-
-template<class T>
-void hexen::engine::components::TransformComponent::setRotation(T &&newRotation) noexcept
-{
-	HEXEN_ADD_TO_PROFILE();
-	rotation = std::forward<T>(newRotation);
-	bIsDirty = true;
-}
-
-template<class T>
-void hexen::engine::components::TransformComponent::setPosition(T &&newPosition) noexcept
-{
-	HEXEN_ADD_TO_PROFILE();
-	position = std::forward<T>(newPosition);
-	bIsDirty = true;
-}

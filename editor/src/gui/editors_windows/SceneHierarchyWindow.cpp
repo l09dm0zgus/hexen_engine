@@ -5,6 +5,8 @@
 #include "SceneHierarchyWindow.hpp"
 #include "../IconsFontAwesome5.hpp"
 #include <misc/cpp/imgui_stdlib.h>
+#include "../Dockspace.hpp"
+#include "EntitySettingsWindow.hpp"
 
 void hexen::editor::gui::SceneHierarchyWindow::begin()
 {
@@ -65,9 +67,10 @@ void hexen::editor::gui::SceneHierarchyWindow::drawEntityChilds(hexen::engine::c
 				isNodeNameEditing[child.key] = true;
 			}
 
-			if(ImGui::IsItemClicked(ImGuiMouseButton_Left))
+			if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
 			{
-				//propertyWindow->setNode(child.value);
+				auto propertyWindow = std::dynamic_pointer_cast<EntitySettingsWindow>(parentDockspace.lock()->getWindow("Entity Settings"));
+				propertyWindow->setNode(child.value);
 			}
 
 

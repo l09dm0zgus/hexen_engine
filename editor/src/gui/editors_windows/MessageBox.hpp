@@ -6,6 +6,7 @@
 
 
 #include "imgui_internal.h"
+#include <algorithm>
 #include <core/Types.hpp>
 #include <glm/glm.hpp>
 #include <imgui.h>

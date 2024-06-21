@@ -143,7 +143,12 @@ namespace hexen::engine::components
         */
 
 		template<class T>
-		void setPosition(T &&newPosition) noexcept;
+		void setPosition(T &&newPosition) noexcept
+		{
+			HEXEN_ADD_TO_PROFILE();
+			position = std::forward<T>(newPosition);
+			bIsDirty = true;
+		}
 
 
 		/**
@@ -160,7 +165,12 @@ namespace hexen::engine::components
         */
 
 		template<class T>
-		void setRotation(T &&newRotation) noexcept;
+		void setRotation(T &&newRotation) noexcept
+		{
+			HEXEN_ADD_TO_PROFILE();
+			rotation = std::forward<T>(newRotation);
+			bIsDirty = true;
+		}
 
 
 		/**
@@ -176,7 +186,12 @@ namespace hexen::engine::components
         */
 
 		template<class T>
-		void setScale(T &&newScale) noexcept;
+		void setScale(T &&newScale) noexcept
+		{
+			HEXEN_ADD_TO_PROFILE();
+			scale = std::forward<T>(newScale);
+			bIsDirty = true;
+		}
 
 		/**
         * Sets the layer value of the object.

@@ -94,6 +94,11 @@ namespace hexen::engine::systems
 
 		void render(float alpha) override;
 
+		static ComponentsRegistry &getComponentRegistry()
+		{
+			return componentsRegistry;
+		}
+
 		template<typename T, typename... Args>
 		static engine::core::i32 registerNewComponent(Args &&...args)
 		{

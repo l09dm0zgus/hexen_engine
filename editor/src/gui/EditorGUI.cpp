@@ -9,6 +9,7 @@
 #include "editors_windows/SceneWindow.hpp"
 #include "editors_windows/Shortcuts.hpp"
 #include <core/window/Window.hpp>
+#include "editors_windows/EntitySettingsWindow.hpp"
 
 hexen::editor::gui::EditorGUI::EditorGUI(const std::shared_ptr<engine::core::Window> &window, const std::shared_ptr<engine::graphics::RenderContext> &renderContext) : EditorGUI()
 {
@@ -52,7 +53,8 @@ hexen::editor::gui::EditorGUI::EditorGUI()
 	dockspace->attachWindow(hexen::engine::core::memory::make_shared<SceneWindow>("Scene", dockspace), Dockspace::DockingPosition::CENTER);
 	dockspace->attachWindow(hexen::engine::core::memory::make_shared<MainMenuBar>("Menu Bar", dockspace), Dockspace::DockingPosition::NONE);
 	dockspace->attachWindow(hexen::engine::core::memory::make_shared<ContentDrawer>("Assets", dockspace), Dockspace::DockingPosition::DOWN);
-	dockspace->attachWindow(hexen::engine::core::memory::make_shared<SceneHierarchyWindow>("Scene Hierarchy",dockspace), Dockspace::DockingPosition::LEFT);
+	dockspace->attachWindow(hexen::engine::core::memory::make_shared<SceneHierarchyWindow>("Scene Hierarchy", dockspace), Dockspace::DockingPosition::LEFT);
+	dockspace->attachWindow(hexen::engine::core::memory::make_shared<EntitySettingsWindow>("Entity Settings", dockspace), Dockspace::DockingPosition::RIGHT);
 }
 
 
