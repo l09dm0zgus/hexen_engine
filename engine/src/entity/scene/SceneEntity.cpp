@@ -230,7 +230,7 @@ bool hexen::engine::entity::SceneEntity::isDescendantExist(const std::string &de
 	return false;
 }
 
-bool hexen::engine::entity::SceneEntity::searchNode(const std::shared_ptr<hexen::engine::entity::SceneEntity> &node, const std::string &searchQuery, core::HashTable<std::string, std::shared_ptr<hexen::engine::entity::SceneEntity>> &foundedNodes)
+bool hexen::engine::entity::SceneEntity::searchNode(const std::shared_ptr<hexen::engine::entity::SceneEntity> &node, const std::string &searchQuery, std::unordered_map<std::string, std::shared_ptr<hexen::engine::entity::SceneEntity>> &foundedNodes)
 {
 	HEXEN_ADD_TO_PROFILE();
 
@@ -238,7 +238,7 @@ bool hexen::engine::entity::SceneEntity::searchNode(const std::shared_ptr<hexen:
 
 	if (found != std::string::npos)
 	{
-		foundedNodes.set(node->getUUID(), node);
+		foundedNodes.insert({node->getUUID(), node});
 		return true;
 	}
 	else

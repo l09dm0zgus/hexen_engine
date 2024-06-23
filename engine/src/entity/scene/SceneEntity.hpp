@@ -192,7 +192,7 @@ namespace hexen::engine::entity
  		* @return true if a matching node is found; otherwise false.
  		*/
 
-		static bool searchNode(const std::shared_ptr<entity::SceneEntity> &node, const std::string &searchQuery, core::HashTable<std::string, std::shared_ptr<entity::SceneEntity>> &foundedNodes);
+		static bool searchNode(const std::shared_ptr<entity::SceneEntity> &node, const std::string &searchQuery, std::unordered_map<std::string, std::shared_ptr<entity::SceneEntity>> &foundedNodes);
 
 		/**
       	* @brief Variadic template function to add a child with provided parameters
