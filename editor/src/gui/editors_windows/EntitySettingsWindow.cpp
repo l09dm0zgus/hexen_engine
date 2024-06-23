@@ -17,7 +17,6 @@ void hexen::editor::gui::EntitySettingsWindow::draw()
 	HEXEN_ADD_TO_PROFILE()
 	ImGui::Begin(getName().c_str(), &isOpen, ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_HorizontalScrollbar);
 	drawCurrentSettings();
-	drawAddComponentMenu();
 	ImGui::End();
 }
 
@@ -57,13 +56,13 @@ void hexen::editor::gui::EntitySettingsWindow::drawCurrentSettings()
 	auto container = ComponentRegestry.getBaseComponentContainer<engine::components::TransformComponent>();
 
 	auto it = std::find_if(container->begin(), container->end(), [this](hexen::engine::components::Component const &c)
-			{ return c.getUUID() == node->getUUID(); });
+			{ return c.getOwnerUUID() == node->getUUID(); });
 
 	if (it == container->end())
 	{
 		return;
 	}
-
+	
 	auto pos = it->getPosition();
 	auto rot = it->getRotation();
 	float layer = it->getLayer();

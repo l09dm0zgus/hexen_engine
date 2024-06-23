@@ -85,7 +85,7 @@ namespace hexen::engine::entity
  		*
  		*/
 
-		[[nodiscard]] core::HashTable<std::string, std::shared_ptr<SceneEntity>> getChildrens() const noexcept;
+		[[nodiscard]] std::unordered_map<std::string, std::shared_ptr<SceneEntity>> getChildrens() const noexcept;
 
 		/**
  		* @brief Retrieves a child of the SceneEntity by name.
@@ -211,7 +211,7 @@ namespace hexen::engine::entity
 			HEXEN_ADD_TO_PROFILE();
 			auto child = core::memory::make_shared<T>(params...);
 			child->setParent(this)
-;			childrens.set(child->getUUID(), child);
+;			childrens.insert(child->getUUID(), child);
 		}
 
 
@@ -288,7 +288,7 @@ namespace hexen::engine::entity
  		* Value: A shared_ptr to child entity.
  		*/
 
-		core::HashTable<std::string, std::shared_ptr<SceneEntity>> childrens;
+		std::unordered_map<std::string, std::shared_ptr<SceneEntity>> childrens;
 
 		/**
  		* @brief A Hash Table to hold the children SceneEntity objects.
@@ -305,6 +305,6 @@ namespace hexen::engine::entity
  		* @return ConstIterator to the child SceneEntity or end() if not found.
  		*/
 
-		[[nodiscard]] core::HashTable<std::string, std::shared_ptr<entity::SceneEntity>>::ConstIterator find(const std::string &name) const;
+		[[nodiscard]] std::unordered_map<std::string, std::shared_ptr<entity::SceneEntity>>::const_iterator find(const std::string &name) const;
 	};
 }// namespace hexen::engine::entity

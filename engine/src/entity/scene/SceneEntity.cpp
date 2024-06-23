@@ -56,7 +56,7 @@ void hexen::engine::entity::SceneEntity::updateTransformMatrix()
 
 	for (auto &&child : childrens)
 	{
-		child.value->updateTransformMatrix();
+		child.second->updateTransformMatrix();
 	}
 }
 
@@ -65,11 +65,11 @@ void hexen::engine::entity::SceneEntity::removeChild(const std::string &name)
 	HEXEN_ADD_TO_PROFILE();
 	if (hasChildrens())
 	{
-		auto it = find(name);
+		auto it = std::find_if(childrens.cbegin(), childrens.cend(), [&name](const std::pair<std::basic_string<char>, std::shared_ptr<SceneEntity>>& c){return c.second->name == name;});
 
 		if (it != childrens.cend())
 		{
-			childrens.remove(it->key);
+			childrens.erase(it->first);
 		}
 	}
 }
@@ -83,7 +83,7 @@ std::string hexen::engine::entity::SceneEntity::getName() const noexcept
 void hexen::engine::entity::SceneEntity::removeChildByUUID(const std::string &UUID)
 {
 	HEXEN_ADD_TO_PROFILE();
-	childrens.remove(UUID);
+	childrens.erase(UUID);
 }
 
 bool hexen::engine::entity::SceneEntity::hasChildrens() const noexcept
@@ -92,7 +92,7 @@ bool hexen::engine::entity::SceneEntity::hasChildrens() const noexcept
 	return !childrens.empty();
 }
 
-hexen::engine::core::HashTable<std::string, std::shared_ptr<hexen::engine::entity::SceneEntity>> hexen::engine::entity::SceneEntity::getChildrens() const noexcept
+std::unordered_map<std::string, std::shared_ptr<hexen::engine::entity::SceneEntity>> hexen::engine::entity::SceneEntity::getChildrens() const noexcept
 {
 	HEXEN_ADD_TO_PROFILE();
 	return childrens;
@@ -101,24 +101,24 @@ hexen::engine::core::HashTable<std::string, std::shared_ptr<hexen::engine::entit
 std::shared_ptr<hexen::engine::entity::SceneEntity> hexen::engine::entity::SceneEntity::getChild(const std::string &name) const noexcept
 {
 	HEXEN_ADD_TO_PROFILE();
-	auto it = find(name);
+	auto it = std::find_if(childrens.cbegin(), childrens.cend(), [&name](const std::pair<std::basic_string<char>, std::shared_ptr<SceneEntity>>& c){return c.second->name == name;});
 
 	if (it == childrens.cend())
 	{
 		return nullptr;
 	}
 
-	return it->value;
+	return it->second;
 }
 
 std::shared_ptr<hexen::engine::entity::SceneEntity> hexen::engine::entity::SceneEntity::getChildByUUID(const std::string &UUID) const noexcept
 {
 	HEXEN_ADD_TO_PROFILE();
 
-	auto child = childrens.get(UUID);
+	auto child = childrens.at(UUID);
 	if (child != nullptr)
 	{
-		return *child;
+		return child;
 	}
 	else
 	{
@@ -126,11 +126,11 @@ std::shared_ptr<hexen::engine::entity::SceneEntity> hexen::engine::entity::Scene
 	}
 }
 
-hexen::engine::core::HashTable<std::string, std::shared_ptr<hexen::engine::entity::SceneEntity>>::ConstIterator hexen::engine::entity::SceneEntity::find(const std::string &name) const
+std::unordered_map<std::string, std::shared_ptr<hexen::engine::entity::SceneEntity>>::const_iterator hexen::engine::entity::SceneEntity::find(const std::string &name) const
 {
 	HEXEN_ADD_TO_PROFILE();
 	auto it = std::find_if(childrens.cbegin(), childrens.cend(), [&name](const auto &keyValue)
-			{ return name == keyValue.value->getName(); });
+			{ return name == keyValue.second->getName(); });
 	return it;
 }
 
@@ -161,7 +161,7 @@ void hexen::engine::entity::SceneEntity::changeParent(std::shared_ptr<SceneEntit
 void hexen::engine::entity::SceneEntity::addChildByPointer(const std::shared_ptr<SceneEntity> &newChild)
 {
 	HEXEN_ADD_TO_PROFILE();
-	childrens.set(newChild->getUUID(), newChild);
+	childrens.insert({newChild->getUUID(), newChild});
 }
 
 bool hexen::engine::entity::SceneEntity::isNodeExist(const std::shared_ptr<hexen::engine::entity::SceneEntity> &node, const std::string &UUID)
@@ -176,7 +176,7 @@ bool hexen::engine::entity::SceneEntity::isNodeExist(const std::shared_ptr<hexen
 	{
 		for (const auto &child : node->childrens)
 		{
-			if (SceneEntity::isNodeExist(child.value, UUID))
+			if (SceneEntity::isNodeExist(child.second, UUID))
 			{
 				return true;
 			}
@@ -197,7 +197,7 @@ std::shared_ptr<hexen::engine::entity::SceneEntity> hexen::engine::entity::Scene
 	{
 		for (const auto &child : node->childrens)
 		{
-			auto result = SceneEntity::getNode(child.value, UUID);
+			auto result = SceneEntity::getNode(child.second, UUID);
 			if (result != nullptr)
 			{
 				return result;
@@ -220,7 +220,7 @@ bool hexen::engine::entity::SceneEntity::isDescendantExist(const std::string &de
 	{
 		for (const auto &child : childrens)
 		{
-			auto isExist = child.value->isDescendantExist(descendantUUID);
+			auto isExist = child.second->isDescendantExist(descendantUUID);
 			if (isExist)
 			{
 				return isExist;
@@ -245,7 +245,7 @@ bool hexen::engine::entity::SceneEntity::searchNode(const std::shared_ptr<hexen:
 	{
 		for (const auto &child : node->childrens)
 		{
-			auto result = SceneEntity::searchNode(child.value, searchQuery, foundedNodes);
+			auto result = SceneEntity::searchNode(child.second, searchQuery, foundedNodes);
 			if (result)
 			{
 				return result;
