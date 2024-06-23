@@ -56,7 +56,7 @@ void hexen::editor::gui::EntitySettingsWindow::drawCurrentSettings()
 	auto container = ComponentRegestry.getBaseComponentContainer<engine::components::TransformComponent>();
 
 	auto it = std::find_if(container->begin(), container->end(), [this](hexen::engine::components::Component const &c)
-			{ return c.getOwnerUUID() == node->getUUID(); });
+			{ return c.getUUID() == node->getUUID(); });
 
 	if (it == container->end())
 	{
