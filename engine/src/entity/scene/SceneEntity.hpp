@@ -211,7 +211,7 @@ namespace hexen::engine::entity
 			HEXEN_ADD_TO_PROFILE();
 			auto child = core::memory::make_shared<T>(params...);
 			child->setParent(this)
-;			childrens.insert(child->getUUID(), child);
+;			childrens.insert({child->getUUID(), child});
 		}
 
 

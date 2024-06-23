@@ -149,7 +149,7 @@ void hexen::engine::core::Scene::SceneIterator::traverseTree(const std::shared_p
 	}
 	for (auto &child : node->getChildrens())
 	{
-		traverseTree(child.value);
+		traverseTree(child.second);
 	}
 }
 

@@ -43,7 +43,7 @@ void hexen::editor::gui::SceneHierarchyWindow::end()
 	HEXEN_ADD_TO_PROFILE()
 }
 
-void hexen::editor::gui::SceneHierarchyWindow::drawEntityChilds(hexen::engine::core::HashTable<std::string, std::shared_ptr<hexen::engine::entity::SceneEntity>> &&childs)
+void hexen::editor::gui::SceneHierarchyWindow::drawEntityChilds(std::unordered_map<std::string, std::shared_ptr<hexen::engine::entity::SceneEntity>> &&childs)
 {
 	HEXEN_ADD_TO_PROFILE()
 
@@ -52,35 +52,35 @@ void hexen::editor::gui::SceneHierarchyWindow::drawEntityChilds(hexen::engine::c
 		hexen::engine::core::i32 flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
 
 
-		if (!child.value->hasChildrens())
+		if (!child.second->hasChildrens())
 		{
 			flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
 		}
 
-		if (child.value != nullptr)
+		if (child.second != nullptr)
 		{
-			ImGui::PushID(child.key.c_str());
-			bool open = ImGui::TreeNodeEx(child.value->getName().data(), flags);
+			ImGui::PushID(child.first.c_str());
+			bool open = ImGui::TreeNodeEx(child.second->getName().data(), flags);
 
 			if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 			{
-				isNodeNameEditing[child.key] = true;
+				isNodeNameEditing[child.first] = true;
 			}
 
 			if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
 			{
 				auto propertyWindow = std::dynamic_pointer_cast<EntitySettingsWindow>(parentDockspace.lock()->getWindow("Entity Settings"));
-				propertyWindow->setNode(child.value);
+				propertyWindow->setNode(child.second);
 			}
 
 
-			if (isNodeNameEditing[child.key])
+			if (isNodeNameEditing[child.first])
 			{
-				auto nodeName = child.value->getName();
+				auto nodeName = child.second->getName();
 				if (ImGui::InputText("##", &nodeName, ImGuiInputTextFlags_EnterReturnsTrue))
 				{
-					child.value->rename(nodeName);
-					isNodeNameEditing[child.key] = false;
+					child.second->rename(nodeName);
+					isNodeNameEditing[child.first] = false;
 				}
 			}
 
@@ -88,16 +88,16 @@ void hexen::editor::gui::SceneHierarchyWindow::drawEntityChilds(hexen::engine::c
 
 			ImGui::PopID();
 
-			bool hasChilds = child.value->hasChildrens();
+			bool hasChilds = child.second->hasChildrens();
 
 			if (open)
 			{
-				startDragAndDropSource(child.value);
-				startDragAndDropTarget(std::move(child.value));
+				startDragAndDropSource(child.second);
+				startDragAndDropTarget(std::move(child.second));
 			}
 			if (hasChilds && open)
 			{
-				drawEntityChilds(std::move(child.value->getChildrens()));
+				drawEntityChilds(child.second->getChildrens());
 				ImGui::TreePop();
 			}
 		}

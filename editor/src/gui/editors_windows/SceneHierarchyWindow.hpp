@@ -30,7 +30,7 @@ namespace hexen::editor::gui
      	* @param childs A hash table of string and shared pointer pairs to SceneEntity objects.
      	*/
 
-		void drawEntityChilds(hexen::engine::core::HashTable<std::string, std::shared_ptr<hexen::engine::entity::SceneEntity>> &&childs);
+		void drawEntityChilds(std::unordered_map<std::string, std::shared_ptr<hexen::engine::entity::SceneEntity>> &&childs);
 
 		/**
      	* @brief Draw the provided entity.
@@ -103,12 +103,12 @@ namespace hexen::editor::gui
 		/**
 		 * @brief Hash table containing the founded child entities.
 		 */
-		hexen::engine::core::HashTable<std::string, std::shared_ptr<hexen::engine::entity::SceneEntity>> foundedChilds;
+		std::unordered_map<std::string, std::shared_ptr<hexen::engine::entity::SceneEntity>> foundedChilds;
 
 		/**
 		 * @brief Hash table indicating by name if a node is being edited currently.
 		 */
-		hexen::engine::core::HashTable<std::string, bool> isNodeNameEditing;
+		std::unordered_map<std::string, bool> isNodeNameEditing;
 
 		/**
 		 * @brief The name of the payload for drag and drop operations.
