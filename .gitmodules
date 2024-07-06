@@ -19,3 +19,6 @@
 [submodule "engine/submodules/parallel-hashmap"]
 	path = engine/submodules/parallel-hashmap
 	url = https://github.com/greg7mdp/parallel-hashmap.git
+[submodule "engine/submodules/spdlog"]
+	path = engine/submodules/spdlog
+	url = https://github.com/gabime/spdlog

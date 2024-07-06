@@ -38,6 +38,7 @@ endif ()
 
 target_include_directories(${EDITOR_NAME} PRIVATE ${BOOST_CONTEXT_INCLUDE_DIR})
 target_include_directories(${EDITOR_NAME} PRIVATE ${IMGUI_INCLUDE_DIR})
+target_include_directories(${EDITOR_NAME} PRIVATE ${SPDLOG_INCLUDE_DIR})
 target_include_directories(${EDITOR_NAME} PRIVATE ${PARENT_DIR}/engine/src)
 
 

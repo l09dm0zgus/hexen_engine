@@ -13,6 +13,7 @@ target_include_directories(${CORE_MODULE_NAME} PUBLIC ${SDL_IMAGE_INCLUDE_DIR})
 target_include_directories(${CORE_MODULE_NAME} PUBLIC ${JSON_INCLUDE_DIR})
 target_include_directories(${CORE_MODULE_NAME} PUBLIC ${CONTEXT_INCLUDE_DIR})
 target_include_directories(${CORE_MODULE_NAME} PUBLIC ${RENDER_ENGINE_INCLUDE_DIR})
+target_include_directories(${CORE_MODULE_NAME} PUBLIC ${SPDLOG_INCLUDE_DIR})
 
 
 target_sources(${CORE_MODULE_NAME} PUBLIC
@@ -53,7 +54,13 @@ target_sources(${CORE_MODULE_NAME} PUBLIC
         application/Settings.cpp
         assets/IAsset.hpp
         assets/AssetsStorage.hpp
-        assets/AssetsStorage.cpp)
+        assets/AssetsStorage.cpp
+        logging/Log.hpp
+        logging/Log.cpp
+        logging/CategoryFormatFlag.hpp
+        logging/CategoryFormatFlag.cpp
+        logging/ValueFormatFlag.hpp
+        logging/ValueFormatFlag.cpp)
 
 
 

@@ -5,7 +5,10 @@
 #include <misc/cpp/imgui_stdlib.h>
 #include <systems/graphics/RenderSystem.hpp>
 #include <components/transform/TransformComponent.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <string>
+#include <core/logging/Log.hpp>
+#include <spdlog/spdlog.h>
 
 void hexen::editor::gui::EntitySettingsWindow::begin()
 {
@@ -29,6 +32,9 @@ hexen::editor::gui::EntitySettingsWindow::EntitySettingsWindow(std::string &&nam
 {
 	HEXEN_ADD_TO_PROFILE();
 	setSize(glm::vec2(400, 300));
+	using namespace hexen::engine::core::logging;
+	Log::initialize();
+	HEXEN_LOG_CALL(editorCategory, LogLevel::info, "Ia sosu bibu")
 }
 
 hexen::editor::gui::EntitySettingsWindow::EntitySettingsWindow(const std::string &name, const std::weak_ptr<Dockspace> &parentDockspace) : GUIWindow(name, parentDockspace)
@@ -45,7 +51,7 @@ void hexen::editor::gui::EntitySettingsWindow::setNode(std::shared_ptr<hexen::en
 void hexen::editor::gui::EntitySettingsWindow::drawCurrentSettings()
 {
 	using namespace std::literals::string_literals;
-	
+
 	if (!node)
 	{
 		return;
@@ -56,48 +62,41 @@ void hexen::editor::gui::EntitySettingsWindow::drawCurrentSettings()
 	auto container = ComponentRegestry.getBaseComponentContainer<engine::components::TransformComponent>();
 
 	auto it = std::find_if(container->begin(), container->end(), [this](hexen::engine::components::Component const &c)
-			{ return c.getUUID() == node->getUUID(); });
+			{ return c.getOwnerUUID() == node->getUUID(); });
 
-	if (it == container->end())
+	if (it != container->end())
 	{
-		return;
-	}
-	
-	auto pos = it->getPosition();
-	auto rot = it->getRotation();
-	float layer = it->getLayer();
+		static auto position = it->getPosition();
+		static auto rotation = it->getRotation();
+		static float layer = it->getLayer();
 
-	if (ImGui::CollapsingHeader(it->getName().c_str(), ImGuiTreeNodeFlags_None))
-	{
-		if (ImGui::CollapsingHeader("Position", ImGuiTreeNodeFlags_None))
+		if (ImGui::CollapsingHeader("Transform Component", ImGuiTreeNodeFlags_None))
 		{
-			ImGui::Text(("Axis x: "s + std::to_string(pos.x)).c_str());
-			ImGui::Text(("Axis y: "s + std::to_string(pos.y)).c_str());
-			float newValue[2] = {0.0, 0.0};
-			ImGui::InputFloat2("Edit position", newValue);
-			if (auto temp = glm::vec2(newValue[0], newValue[1]); temp != pos)
+			if (ImGui::CollapsingHeader("Position", ImGuiTreeNodeFlags_None))
 			{
-				it->setPosition(temp);
+				ImGui::Text(("Axis x: "s + std::to_string(position.x)).c_str());
+				ImGui::Text(("Axis y: "s + std::to_string(position.y)).c_str());
+				if (ImGui::InputFloat2("Position", glm::value_ptr(position)))
+				{
+					it->setPosition(position);
+				}
 			}
-		}
-		if (ImGui::CollapsingHeader("Rotation", ImGuiTreeNodeFlags_None))
-		{
-			ImGui::Text(("Axis x: "s + std::to_string(rot.x)).c_str());
-			ImGui::Text(("Axis y: "s + std::to_string(rot.y)).c_str());
-			float newValue[2] = {0.0, 0.0};
-			ImGui::InputFloat2("Edit rotation", newValue);
-			if (auto temp = glm::vec2(newValue[0], newValue[1]); temp != pos)
+			if (ImGui::CollapsingHeader("Rotation", ImGuiTreeNodeFlags_None))
 			{
-				it->setRotation(temp);
+				ImGui::Text(("Axis x: "s + std::to_string(rotation.x)).c_str());
+				ImGui::Text(("Axis y: "s + std::to_string(rotation.y)).c_str());
+				if (ImGui::InputFloat2("Rotation", glm::value_ptr(rotation)))
+				{
+					it->setRotation(rotation);
+				}
 			}
-		}
-		if (ImGui::CollapsingHeader("Layer", ImGuiTreeNodeFlags_None))
-		{
-			ImGui::Text(("Game Layer: "s + std::to_string(it->getLayer())).c_str());
-			float temp = 0.0;
-			ImGui::InputFloat("Set layer", &temp);
-			if (temp != layer){
-				it->setLayer(temp);
+			if (ImGui::CollapsingHeader("Layer", ImGuiTreeNodeFlags_None))
+			{
+				ImGui::Text(("Game Layer: "s + std::to_string(layer)).c_str());
+				if (ImGui::InputFloat("Layer ", &layer))
+				{
+					it->setLayer(layer);
+				}
 			}
 		}
 	}

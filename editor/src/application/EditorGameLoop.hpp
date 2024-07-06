@@ -3,7 +3,7 @@
 //
 
 #pragma once
-#include "systems/GameLoop.hpp"
+#include <systems/GameLoop.hpp>
 
 namespace hexen::engine::core
 {
