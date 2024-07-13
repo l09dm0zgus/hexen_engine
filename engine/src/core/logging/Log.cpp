@@ -19,7 +19,7 @@ void hexen::engine::core::logging::Log::initialize()
 			.set_pattern("[%H:%M:%S %z] [%n] [%K] [%l] {%@} %V");
 	spdlog::set_formatter(std::move(formatter));
 	consoleLogger = spdlog::stderr_color_mt("console");
-	fileLogger = spdlog::basic_logger_mt("file", "/logs/log.txt");
+	fileLogger = spdlog::basic_logger_mt("file", "./logs/log.txt");
 	consoleLogger->set_level(spdlog::level::trace);
 	fileLogger->set_level(spdlog::level::trace);
 }
