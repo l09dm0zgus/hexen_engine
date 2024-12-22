@@ -26,6 +26,8 @@ target_sources(${EDITOR_NAME} PRIVATE
         TilesetEditor.cpp
         EntitySettingsWindow.cpp
         EntitySettingsWindow.hpp
+        LogWindow.hpp
+        LogWindow.cpp
         )
 
 add_subdirectory(native_file_dialog)

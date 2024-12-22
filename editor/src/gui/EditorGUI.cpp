@@ -10,6 +10,7 @@
 #include "editors_windows/Shortcuts.hpp"
 #include <core/window/Window.hpp>
 #include "editors_windows/EntitySettingsWindow.hpp"
+#include "editors_windows/LogWindow.hpp"
 
 hexen::editor::gui::EditorGUI::EditorGUI(const std::shared_ptr<engine::core::Window> &window, const std::shared_ptr<engine::graphics::RenderContext> &renderContext) : EditorGUI()
 {
@@ -55,6 +56,7 @@ hexen::editor::gui::EditorGUI::EditorGUI()
 	dockspace->attachWindow(hexen::engine::core::memory::make_shared<ContentDrawer>("Assets", dockspace), Dockspace::DockingPosition::DOWN);
 	dockspace->attachWindow(hexen::engine::core::memory::make_shared<SceneHierarchyWindow>("Scene Hierarchy", dockspace), Dockspace::DockingPosition::LEFT);
 	dockspace->attachWindow(hexen::engine::core::memory::make_shared<EntitySettingsWindow>("Entity Settings", dockspace), Dockspace::DockingPosition::RIGHT);
+	dockspace->attachWindow(hexen::engine::core::memory::make_shared<LogWindow>("Editor Logs", dockspace), Dockspace::DockingPosition::DOWN);
 }
 
 

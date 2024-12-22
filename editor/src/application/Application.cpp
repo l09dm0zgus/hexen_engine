@@ -5,10 +5,12 @@
 #include "Application.hpp"
 #include <graphics/render_context/RenderContext.hpp>
 #include <core/assets/AssetsStorage.hpp>
+#include <core/logging/Log.hpp>
 
 hexen::editor::Application::Application()
 {
 	HEXEN_ADD_TO_PROFILE()
+	hexen::engine::core::logging::Log::initialize();
 	engine::core::assets::AssetsStorage::addDefaultStorage(std::filesystem::current_path() / "EngineData");
 	engine::core::assets::AssetsStorage::addAssetsStorage(settings.getApplicationName(), std::filesystem::current_path() / "EditorData");
 

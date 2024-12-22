@@ -9,6 +9,7 @@
 #include <string>
 #include <core/logging/Log.hpp>
 #include <spdlog/spdlog.h>
+#include "../../logging/EditorCategories.hpp"
 
 void hexen::editor::gui::EntitySettingsWindow::begin()
 {
@@ -32,9 +33,7 @@ hexen::editor::gui::EntitySettingsWindow::EntitySettingsWindow(std::string &&nam
 {
 	HEXEN_ADD_TO_PROFILE();
 	setSize(glm::vec2(400, 300));
-	using namespace hexen::engine::core::logging;
-	Log::initialize();
-	HEXEN_LOG_CALL(editorCategory, LogLevel::info, "Ia sosu bibu")
+	HEXEN_LOG_CALL(hexen::editor::logging::editorCategory, LogLevel::info, "Ia sosu bibu")
 }
 
 hexen::editor::gui::EntitySettingsWindow::EntitySettingsWindow(const std::string &name, const std::weak_ptr<Dockspace> &parentDockspace) : GUIWindow(name, parentDockspace)

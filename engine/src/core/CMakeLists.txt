@@ -60,7 +60,10 @@ target_sources(${CORE_MODULE_NAME} PUBLIC
         logging/CategoryFormatFlag.hpp
         logging/CategoryFormatFlag.cpp
         logging/ValueFormatFlag.hpp
-        logging/ValueFormatFlag.cpp)
+        logging/ValueFormatFlag.cpp
+        logging/BufferSink.hpp
+        logging/RingBuffer.hpp
+        )
 
 
 

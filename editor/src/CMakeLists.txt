@@ -11,12 +11,13 @@ add_subdirectory(components)
 target_sources(${EDITOR_NAME} PRIVATE
         Application.rc
         main.cpp
-        application/Application.cpp
         application/Application.hpp
+        application/Application.cpp
         application/EditorGameLoop.hpp
         application/EditorGameLoop.cpp
         project/Project.hpp
         project/Project.cpp
+        logging/EditorCategories.hpp
         )
 
 if(MSVC)

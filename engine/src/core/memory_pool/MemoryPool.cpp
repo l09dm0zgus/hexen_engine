@@ -6,6 +6,7 @@
 #include <SDL3/SDL.h>
 #include <algorithm>
 #include <malloc.h>
+#include "../logging/Log.hpp"
 
 hexen::engine::core::memory::MemoryPool::MemoryPool(u64 size) : size(size)
 {
@@ -13,7 +14,9 @@ hexen::engine::core::memory::MemoryPool::MemoryPool(u64 size) : size(size)
 	memory = malloc(size);
 	lastAddress = memory;
 	maxAddress = (vptr) (((u64) memory) + (size));
-	SDL_Log("Allocated memory in pool : %llu bytes.\nMemory address : %p.\n", size, memory);
+	//SDL_Log("Allocated memory in pool : %llu bytes.\nMemory address : %p.\n", size, memory);
+	using namespace hexen::engine::core::logging;
+	HEXEN_LOG_CALL(coreCategory, LogLevel::info, "Allocated memory in pool : {} bytes.\nMemory address : {}.", size, memory)
 }
 
 void hexen::engine::core::memory::MemoryPool::free(vptr address) noexcept
@@ -23,7 +26,9 @@ void hexen::engine::core::memory::MemoryPool::free(vptr address) noexcept
 			{ return allocation.address == address; });
 	if (iterator != allocations.end())
 	{
-		SDL_Log("Freed allocation from address: %p\n.Returned memory to pool : %llu.\n", address, iterator->occupiedBytes);
+		using namespace hexen::engine::core::logging;
+		//SDL_Log("Freed allocation from address: %p\n.Returned memory to pool : %llu.\n", address, iterator->occupiedBytes);
+		HEXEN_LOG_CALL(coreCategory, LogLevel::info, "Freed allocation from address: {}.\nReturned memory to pool : {}.", address, iterator->occupiedBytes);
 		iterator->freeFlag = 1u;
 		iterator->occupiedBytes = 0;
 	}
@@ -33,7 +38,9 @@ hexen::engine::core::memory::MemoryPool::~MemoryPool()
 {
 	HEXEN_ADD_TO_PROFILE()
 	free(memory);
-	SDL_Log("Freed memory from pool  address : %p.Size of freed memory: %llu.\n", memory, size);
+	//SDL_Log("Freed memory from pool  address : %p.Size of freed memory: %llu.\n", memory, size);
+	using namespace hexen::engine::core::logging;
+	HEXEN_LOG_CALL(coreCategory, LogLevel::info, "Freed memory from pool  address :{}.\nSize of freed memory: {}.", memory, size);
 }
 
 hexen::engine::core::vptr hexen::engine::core::memory::MemoryPool::allocate(u64 allocationSize)
@@ -69,7 +76,9 @@ hexen::engine::core::vptr hexen::engine::core::memory::MemoryPool::allocate(u64 
 
 	if (lastAddress >= maxAddress)
 	{
-		SDL_Log("Failed to allocate memory for object.\n");
+		//SDL_Log("Failed to allocate memory for object.\n");
+		using namespace hexen::engine::core::logging;
+		HEXEN_LOG_CALL(coreCategory, LogLevel::err, "Failed to allocate memory for object.")
 		return nullptr;
 	}
 	Allocation allocation {};
@@ -90,5 +99,7 @@ inline void hexen::engine::core::memory::MemoryPool::showLogForAllocation(const 
 {
 	HEXEN_ADD_TO_PROFILE();
 	auto freeMemory = (((u64) maxAddress) - (u64) lastAddress);
-	SDL_Log("Allocated memory from address : %p.\nOccupied Bytes: %llu.\nAllocated memory for object: %llu.\nPool size : %llu.\nPool memory begin address : %p.\nAllocation objects : %zu.\nFree memory in pool:%lluu.\n", allocation.address, allocation.occupiedBytes, allocation.allocatedBytes, size, memory, allocations.size(), freeMemory);
+	//SDL_Log("Allocated memory from address : %p.\nOccupied Bytes: %llu.\nAllocated memory for object: %llu.\nPool size : %llu.\nPool memory begin address : %p.\nAllocation objects : %zu.\nFree memory in pool:%lluu.\n", allocation.address, allocation.occupiedBytes, allocation.allocatedBytes, size, memory, allocations.size(), freeMemory);
+	using namespace hexen::engine::core::logging;
+	HEXEN_LOG_CALL(coreCategory, LogLevel::info, "Allocated memory from address : {}.\nOccupied Bytes: {}.\nAllocated memory for object: {}.\nPool size : {}.\nPool memory begin address : {}.\nAllocation objects : {}.\nFree memory in pool:{}u.", allocation.address, allocation.occupiedBytes, allocation.allocatedBytes, size, memory, allocations.size(), freeMemory)
 }

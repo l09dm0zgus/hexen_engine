@@ -2,9 +2,7 @@
 // Created by vedme on 04.06.2024.
 //
 
-#ifndef HEXEN_ENTITYSETTINGSWINDOW_HPP
-#define HEXEN_ENTITYSETTINGSWINDOW_HPP
-
+#pragma once
 #include "GUIWindow.hpp"
 #include "entity/scene/SceneEntity.hpp"
 
@@ -24,7 +22,7 @@ namespace hexen::editor::gui {
 	public:
 		EntitySettingsWindow(std::string &&name, const std::weak_ptr<Dockspace> &parentDockspace);
 
-		EntitySettingsWindow(const std::string& name, const std::weak_ptr<Dockspace> &parentDockspace);
+		EntitySettingsWindow(const std::string &name, const std::weak_ptr<Dockspace> &parentDockspace);
 
 		void begin() override;
 
@@ -36,5 +34,3 @@ namespace hexen::editor::gui {
 
 	};
 }
-
-#endif//HEXEN_ENTITYSETTINGSWINDOW_HPP
